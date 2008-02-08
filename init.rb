@@ -1,0 +1,1 @@
+require 'yui4rails'
