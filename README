@@ -1,13 +1,63 @@
-Yui4rails
-=========
+YUI 4 Rails
+===========
 
-Introduction goes here.
-
-
-Example
-=======
-
-Example goes here.
+YUI 4 Rails is a plugin for easier integration of YUI components/widgets into a Rails application.  Initially, we will only be offering two components, datatable and charts, however more will follow.  We also encourage others to help convert their favorite components for the plugin and contribute it back to the community.  
 
 
-Copyright (c) 2008 [name of plugin creator], released under the MIT license
+Installation
+===========
+
+As with plugins, you can install YUI 4 Rails either from archive or subversion.
+
+Via Subversion:
+
+script/plugin install svn://rubyforge.org/var/svn/yui4rails/trunk/
+
+Via archive:
+
+Download either the tar.gz or zip file and extract it into your RAILS_APP/vendor/plugins directory. 
+
+
+Next, you will want to run the rake command to install the YUI resources into your application.  
+
+From the plugin root, run this command:
+rake initialize_yui
+
+You should then find a lot of resources copied to the <RAILS_ROOT>/public/yui directory.  At this time, the plugin assumes that you are referencing the YUI resources from your server, as opposed to theirs.  We will make this optional in the future.
+
+At this point you can start to use the plugin in your application.
+
+
+Using
+===========
+
+1) Including YUI resources
+
+We have a convenience include helper for you to use in your templates
+
+<%= include_yui  %>
+
+You will want to feed this an array of component names (as symbols) such as:
+
+<%= include_yui :datatable, :charts %>
+
+It will pull in the necessary javascript and stylesheet resources for those components.
+
+
+For the two components, you'll first want to read up on how to use them from YUI's developer site as they're not trivial widgets.  Our wrappers on these objects are as follows:
+
+data_table = Yui4Rails::Widgets::DataTable.new("your_table_id", column_definitions, data_rows, footer_row = "")
+
+After constructing the component, you then need to render it via the render method:
+
+data_table.render
+
+Charts works essentially the same way:
+
+chart = Yui4Rails::Widgets::Chart.new("yui_chart_id", yui_column_definitions, yui_data_rows)
+chart.render
+
+
+You can usually find more tidbits on this plugin at Marty Haught's blog:  http://martyhaught.com
+
+Copyright (c) 2008 Marty Haught, Andy Kappen, released under the MIT license
