@@ -45,8 +45,8 @@ module Yui4Rails
 	          fields: #{@data_keys.to_json}
 	        };
 	        var myDataTable = new YAHOO.widget.DataTable("#{@table_id}", myColumnDefs, myDataSource);
-
-					myDataTable._elTable.createTFoot().innerHTML = "#{@footer_row}";
+					var tbody_id = myDataTable._sId + "-bodytable";
+					$(tbody_id).createTFoot().innerHTML = '#{@footer_row}';
 	      });
 	      </script>
 	      PAGE

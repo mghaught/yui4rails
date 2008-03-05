@@ -23,11 +23,11 @@ describe Yui4Rails::IncludeExtension, ".include_yui" do
   end
 
   it "should return appropriate resources for :datatable" do
-   	@caller.include_yui(:datatable).should == "/yui/fonts/fonts-min\n/yui/datatable/assets/skins/sam/datatable\n/yui/utilities/utilities\n/yui/datasource/datasource-beta-min\n/yui/datatable/datatable-beta-min"
+   	@caller.include_yui(:datatable).should == "/yui/datatable/assets/skins/sam/datatable\n/yui/utilities/utilities\n/yui/datasource/datasource-beta-min\n/yui/datatable/datatable-beta-min"
   end
 
   it "should return appropriate resources for :charts" do
-   	@caller.include_yui(:charts).should == "/yui/utilities/utilities\n/yui/datasource/datasource-beta-min\n/yui/json/json-beta-min\n/yui/charts/charts-experimental-min"
+   	@caller.include_yui(:charts).should == "/yui/utilities/utilities\n/yui/datasource/datasource-beta-min\n/yui/json/json-min\n/yui/charts/charts-experimental-min\n<SCRIPT>\nYAHOO.widget.Chart.SWFURL = \"/yui/charts/assets/charts.swf\";\n</SCRIPT>"
   end
 
 end
