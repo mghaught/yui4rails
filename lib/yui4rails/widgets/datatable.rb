@@ -24,27 +24,6 @@ module Yui4Rails
 	  end
   
 	  class DataTable
-	    def orig_initialize(table_div_id, col_defs, data_rows, footer_row = "", options={})
-	      @table_div_id = table_div_id
-	      @col_defs = col_defs
-	      @data_rows = data_rows
-	      @data_keys = Widgets.extract_keys(data_rows)
-	      @footer_row = footer_row
-        @table_id = options[:table_id] || nil
-      end
-
-      def new_initialize(options = {})
-        @table_div_id = options[:table_div_id] || nil
-        @table_id     = options[:table_id]     || nil
-        @col_defs     = options[:col_defs]     || nil
-        @data_rows    = options[:data_rows]    || nil
-        @footer_row   = options[:footer_row]   || nil
-        @data_keys    = options[:data_keys]    || nil
-        if @data_rows and !@data_keys
-          @data_keys = Widgets.extract_keys(data_rows)
-        end
-      end
-
       # Initialize new DataTable object
       # accepts either a list of arguments for backward compatability
       # or a hash of options.
@@ -53,7 +32,7 @@ module Yui4Rails
       # * <tt>:table_div_id</tt>: DOM element ID for div surrounding table
       # * <tt>:col_defs</tt>: Hash of column definitions
       # * <tt>:data_rows</tt>: Hash of data rows
-      # * <tt>:footer_row</tt>: footer div id. This does not work in YUI 2.5.1
+      # * <tt>:footer_row</tt>: footer div id.  -See ActiveWarehouse for the yui_adapter than uses this
       # * <tt>:options</tt>: additional hash of options, including :table_id, the
       # DOM element ID for the HTML table
       # 
