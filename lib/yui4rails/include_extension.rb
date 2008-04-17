@@ -31,25 +31,37 @@ module Yui4Rails
 		end
 			
 		def include_yui(*args)
-			options = args.last.is_a?(Hash) ? args.pop : {} 
+			@yui_components ||= []
+			@yui_components += args
+		end
+		
+		def yui_includes(*args)
+			@yui_components ||= []
+			@yui_components += args			
+			
 			@yui_stylesheets = []
 			@yui_javascript = []
 			@yui_script = []
-			yui_includes = []
+			yui_includes = [""]
 			
-			add_container_includes if args.include?(:container)
-			add_datatable_includes if args.include?(:datatable)
-			add_charts_includes if args.include?(:charts)
-			add_carousel_includes if args.include?(:carousel)
+			@yui_stylesheets << "reset/reset-min" if @yui_components.include?(:reset)
+			@yui_stylesheets << "fonts/fonts-min" if @yui_components.include?(:fonts)
+			add_container_includes if @yui_components.include?(:container)
+			add_datatable_includes if @yui_components.include?(:datatable)
+			add_charts_includes if @yui_components.include?(:charts)
+			add_carousel_includes if @yui_components.include?(:carousel)
 			
 		
 			yui_includes << @yui_stylesheets.uniq.map{|ss| stylesheet_link_tag("/yui/#{ss}")}
 			yui_includes << @yui_javascript.uniq.map{|js| javascript_include_tag("/yui/#{js}")}
 			
+			@yui_script << Yui4Rails::AssetManager.scripts
+			appended_yui_script = instance_variable_get("@content_for_yui_script").to_s
+			@yui_script << appended_yui_script if appended_yui_script
 			unless @yui_script.empty?
-				yui_includes << "<SCRIPT>"
+				yui_includes << %{<script type="text/javascript" charset="utf-8">}
 				yui_includes << @yui_script
-				yui_includes << "</SCRIPT>"
+				yui_includes << "</script>"
 			end			
 			yui_includes.flatten.join("\n")
 		end
