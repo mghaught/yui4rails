@@ -30,4 +30,8 @@ describe Yui4Rails::IncludeExtension, ".include_yui" do
    	@caller.include_yui(:charts).should == "/yui/utilities/utilities\n/yui/datasource/datasource-beta-min\n/yui/json/json-min\n/yui/charts/charts-experimental-min\n<SCRIPT>\nYAHOO.widget.Chart.SWFURL = \"/yui/charts/assets/charts.swf\";\n</SCRIPT>"
   end
 
+  it "should return appropriate resources for :carousel" do
+   	@caller.include_yui(:carousel).should == "/yui/carousel/assets/carousel\n/yui/yahoo-dom-event/yahoo-dom-event\n/yui/animation/animation-min\n/yui/container/container-min\n/yui/carousel/carousel_min"
+  end
+
 end
