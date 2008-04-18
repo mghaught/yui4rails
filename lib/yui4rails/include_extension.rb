@@ -55,7 +55,7 @@ module Yui4Rails
 			yui_includes << @yui_stylesheets.uniq.map{|ss| stylesheet_link_tag("/yui/#{ss}")}
 			yui_includes << @yui_javascript.uniq.map{|js| javascript_include_tag("/yui/#{js}")}
 			
-			@yui_script << Yui4Rails::AssetManager.scripts
+			@yui_script << asset_manager.scripts
 			appended_yui_script = instance_variable_get("@content_for_yui_script").to_s
 			@yui_script << appended_yui_script if appended_yui_script
 			unless @yui_script.empty?
