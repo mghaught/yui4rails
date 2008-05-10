@@ -6,10 +6,11 @@ module Yui4Rails
 				@collection = collection
 				@options = defaults.merge(options)
 				@options[:size] = @collection.size
+				render_head_script
 	    end
 	
-			def render_head_script(asset_manager)
-				asset_manager.add_script <<-PAGE
+			def render_head_script
+				Yui4Rails::AssetManager.manager.add_script <<-PAGE
 				YAHOO.util.Event.addListener(window, "load", function() 
 				{
 					new YAHOO.extension.Carousel("#{@carousel_id}", 
