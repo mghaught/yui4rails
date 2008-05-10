@@ -1,0 +1,11 @@
+=== 0.1.1 (Apr 18, 2008)
+* Added CONTRIBUTORS and CHANGELOG files to plugin
+* Added comment on chart widget to indicate it is not ready for public use due to hard-coded values
+* Removed unused methods from datatable.
+* Updated datatable widget to work with 2.5.1 changes -- significant changes to tfoot css style needs
+* Updated yui resources to 2.5.1
+* Applied patch from Bryan Donovan to enhance Datatable widget to use an existing html element. [Bryan Donovan]
+* Updated the charts and datatable widget code to work with 2.5
+
+=== 0.0.1 (Feb 8, 2008)
+* Initial Release
