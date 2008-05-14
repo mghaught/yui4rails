@@ -4,7 +4,6 @@ module Yui4Rails
 		def yui_carousel(carousel_id, collection, options = {}, &block)
 			asset_manager.add_components :carousel
 			carousel = Yui4Rails::Widgets::Carousel.new(carousel_id, collection, options)
-			carousel.render_head_script(asset_manager)
 			
 			concat(%{<div id="#{carousel_id}" class="carousel-component">}, block.binding)
 			yield block

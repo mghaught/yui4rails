@@ -3,6 +3,14 @@ module Yui4Rails
 		
 		attr_accessor :scripts
 		
+		def self.reset
+			@@manager = nil
+		end
+		
+		def self.manager
+			@@manager ||= new
+		end
+		
 		def initialize
 			@scripts = ""
 			@components = []

@@ -2,7 +2,7 @@ module Yui4Rails
   module IncludeExtension
 			
 		def asset_manager
-			@yui_asset_manager ||= Yui4Rails::AssetManager.new
+			Yui4Rails::AssetManager.manager
 		end
 					
 		def include_yui(*args)

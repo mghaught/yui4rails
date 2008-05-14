@@ -5,4 +5,6 @@ require 'yui4rails/widgets'
 
 ActionView::Base.send(:include, Yui4Rails::IncludeExtension)
 ActionView::Base.send(:include, Yui4Rails::HelpersExtension)
-
+ActionController::Base.send(:prepend_before_filter) do
+	Yui4Rails::AssetManager.reset
+end
