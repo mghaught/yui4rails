@@ -1,3 +1,4 @@
+require 'yui4rails/asset_manager'
 require 'yui4rails/include_extension'
 require 'yui4rails/helpers_extension'
 require 'yui4rails/widgets'

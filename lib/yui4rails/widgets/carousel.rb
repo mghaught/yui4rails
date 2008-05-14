@@ -6,19 +6,15 @@ module Yui4Rails
 				@collection = collection
 				@options = defaults.merge(options)
 				@options[:size] = @collection.size
-	    end
-    
-	    def render
-	      <<-PAGE
-<script type="text/javascript"> 
-   YAHOO.util.Event.addListener(window, "load", function() 
-{
-	carousel = new YAHOO.extension.Carousel("#{@carousel_id}", 
-		{#{@options.keys.map{|key| optional_value(key)}.join(", ")}}
-	);
-});
-</script> 
-	      PAGE
+
+				Yui4Rails::AssetManager.add_script <<-PAGE
+	YAHOO.util.Event.addListener(window, "load", function() 
+	{
+		new YAHOO.extension.Carousel("#{@carousel_id}", 
+			{#{@options.keys.map{|key| optional_value(key)}.join(", ")}}
+		);
+	});
+																							PAGE
 	    end
 	
 			private
