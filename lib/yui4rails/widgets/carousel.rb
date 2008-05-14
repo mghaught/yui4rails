@@ -6,16 +6,18 @@ module Yui4Rails
 				@collection = collection
 				@options = defaults.merge(options)
 				@options[:size] = @collection.size
-
-				Yui4Rails::AssetManager.add_script <<-PAGE
-	YAHOO.util.Event.addListener(window, "load", function() 
-	{
-		new YAHOO.extension.Carousel("#{@carousel_id}", 
-			{#{@options.keys.map{|key| optional_value(key)}.join(", ")}}
-		);
-	});
-																							PAGE
 	    end
+	
+			def render_head_script(asset_manager)
+				asset_manager.add_script <<-PAGE
+				YAHOO.util.Event.addListener(window, "load", function() 
+				{
+					new YAHOO.extension.Carousel("#{@carousel_id}", 
+						{#{@options.keys.map{|key| optional_value(key)}.join(", ")}}
+					);
+				});
+																										PAGE
+			end
 	
 			private
 			# TODO - make a way to take a app-wide options to merge into these defaults

@@ -1,13 +1,15 @@
 module Yui4Rails
 	class AssetManager
-		def self.add_script(script)
-			@scripts ||= ""
+		
+		attr_accessor :scripts
+
+		def initialize
+			@scripts = ""
+		end
+
+		def add_script(script)
 			@scripts << script
 		end
-		
-		def self.scripts
-			@scripts
-		end
-		
+
 	end
 end
