@@ -21,6 +21,14 @@ module Yui4Rails
 			@yui_javascript << "animation/animation-min"
 			@yui_javascript << "container/container-min"	
 		end
+		
+		def add_carousel_includes
+			@yui_stylesheets << "carousel/assets/carousel"
+			@yui_javascript << "yahoo-dom-event/yahoo-dom-event"
+			@yui_javascript << "animation/animation-min"
+			@yui_javascript << "container/container-min"
+			@yui_javascript << "carousel/carousel_min"	
+		end
 			
 		def include_yui(*args)
 			options = args.last.is_a?(Hash) ? args.pop : {} 
@@ -32,6 +40,7 @@ module Yui4Rails
 			add_container_includes if args.include?(:container)
 			add_datatable_includes if args.include?(:datatable)
 			add_charts_includes if args.include?(:charts)
+			add_carousel_includes if args.include?(:carousel)
 			
 		
 			yui_includes << @yui_stylesheets.uniq.map{|ss| stylesheet_link_tag("/yui/#{ss}")}
