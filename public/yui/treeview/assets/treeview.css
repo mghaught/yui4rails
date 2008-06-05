@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 /* first or middle sibling, no children */
 
@@ -90,11 +90,11 @@ version: 2.5.1
 /* the style of the div around each node */
 .ygtvitem { }  
 
-
-.ygtvitem  table{
-    margin-bottom:0;
+.ygtvitem table {
+    margin-bottom:0; border:none;
 }
-.ygtvitem  td {
+
+.ygtvitem th td {
     border:none;padding:0;
 } 
 

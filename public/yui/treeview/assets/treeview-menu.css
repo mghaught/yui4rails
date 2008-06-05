@@ -2,8 +2,19 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
+*
+/* the style of the div around each node */
+.ygtvitem { border: 0px solid grey; }  
+
+.ygtvitem  table{
+    margin-bottom:0;
+}
+.ygtvitem  td {
+    border:none;padding:0;
+} 
+
 /* first or middle sibling, no children */
 .ygtvtn {
 	width:1em; height:20px; background:none
@@ -81,19 +92,10 @@ version: 2.5.1
 
 .ygtvblankdepthcell { width:1em; height:20px; }
 
-/* the style of the div around each node */
-.ygtvitem { border: 0px solid grey; }  
 
 /* the style of the div around each node's collection of children */
 .ygtvchildren {  }  
 * html .ygtvchildren { height:2%; }  
-
-.ygtvitem  table{
-    margin-bottom:0;
-}
-.ygtvitem  td {
-    border:none;padding:0;
-} 
 
 /* the style of the text label in ygTextNode */
 .ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited, .ygtvlabel:hover { 

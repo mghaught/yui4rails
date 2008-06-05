@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
  /**
  * The AutoComplete control provides the front-end logic for text-entry suggestion and
@@ -1970,21 +1970,23 @@ YAHOO.widget.AutoComplete.prototype._onTextboxKeyDown = function(v,oSelf) {
 
     switch (nKeyCode) {
         case 9: // tab
-            // select an item or clear out
-            if(oSelf._oCurItem) {
-                if(oSelf.delimChar && (oSelf._nKeyCode != nKeyCode)) {
-                    if(oSelf._bContainerOpen) {
-                        YAHOO.util.Event.stopEvent(v);
+            if((navigator.userAgent.toLowerCase().indexOf("mac") == -1)) {
+                // select an item or clear out
+                if(oSelf._oCurItem) {
+                    if(oSelf.delimChar && (oSelf._nKeyCode != nKeyCode)) {
+                        if(oSelf._bContainerOpen) {
+                            YAHOO.util.Event.stopEvent(v);
+                        }
                     }
+                    oSelf._selectItem(oSelf._oCurItem);
                 }
-                oSelf._selectItem(oSelf._oCurItem);
-            }
-            else {
-                oSelf._toggleContainer(false);
+                else {
+                    oSelf._toggleContainer(false);
+                }
             }
             break;
         case 13: // enter
-            if(!YAHOO.env.ua.webkit) {
+            if((navigator.userAgent.toLowerCase().indexOf("mac") == -1)) {
                 if(oSelf._oCurItem) {
                     if(oSelf._nKeyCode != nKeyCode) {
                         if(oSelf._bContainerOpen) {
@@ -2028,13 +2030,20 @@ YAHOO.widget.AutoComplete.prototype._onTextboxKeyPress = function(v,oSelf) {
     var nKeyCode = v.keyCode;
 
         //Expose only to Mac browsers, where stopEvent is ineffective on keydown events (bug 790337)
-        if(YAHOO.env.ua.webkit) {
+        if((navigator.userAgent.toLowerCase().indexOf("mac") != -1)) {
             switch (nKeyCode) {
             case 9: // tab
+                // select an item or clear out
                 if(oSelf._oCurItem) {
                     if(oSelf.delimChar && (oSelf._nKeyCode != nKeyCode)) {
-                        YAHOO.util.Event.stopEvent(v);
+                        if(oSelf._bContainerOpen) {
+                            YAHOO.util.Event.stopEvent(v);
+                        }
                     }
+                    oSelf._selectItem(oSelf._oCurItem);
+                }
+                else {
+                    oSelf._toggleContainer(false);
                 }
                 break;
             case 13: // enter
@@ -3081,9 +3090,13 @@ YAHOO.widget.DS_XHR.prototype.parseResponse = function(sQuery, oResponse, oParen
                 if(oResponse.substr(newLength) == aSchema[0]) {
                     oResponse = oResponse.substr(0, newLength);
                 }
-                var aRecords = oResponse.split(aSchema[0]);
-                for(var n = aRecords.length-1; n >= 0; n--) {
-                    aResults[n] = aRecords[n].split(aSchema[1]);
+                if(oResponse.length > 0) {
+                    var aRecords = oResponse.split(aSchema[0]);
+                    for(var n = aRecords.length-1; n >= 0; n--) {
+                        if(aRecords[n].length > 0) {
+                            aResults[n] = aRecords[n].split(aSchema[1]);
+                        }
+                    }
                 }
             }
             break;
@@ -3613,4 +3626,4 @@ YAHOO.widget.DS_JSArray.prototype.doQuery = function(oCallbackFn, sQuery, oParen
     oCallbackFn(sQuery, aResults, oParent);
 };
 
-YAHOO.register("autocomplete", YAHOO.widget.AutoComplete, {version: "2.5.1", build: "984"});
+YAHOO.register("autocomplete", YAHOO.widget.AutoComplete, {version: "2.5.2", build: "1076"});
