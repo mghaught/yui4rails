@@ -1,5 +1,9 @@
 YUI Library - Selector - Release Notes
 
+2.5.2
+
+  * No changes.
+
 2.5.1
 
   * query() returns null when firstOnly and no result 

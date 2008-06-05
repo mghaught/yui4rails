@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 YAHOO.namespace("tool");
 
@@ -3310,4 +3310,4 @@ YAHOO.tool.TestReporter.prototype = {
 
 };
 
-YAHOO.register("yuitest", YAHOO.tool.TestRunner, {version: "2.5.1", build: "984"});
+YAHOO.register("yuitest", YAHOO.tool.TestRunner, {version: "2.5.2", build: "1076"});

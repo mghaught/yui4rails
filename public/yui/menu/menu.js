@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 
 
@@ -273,7 +273,7 @@ version: 2.5.1
                     if (YAHOO.lang.hasOwnProperty(m_oVisibleMenus, i)) {
         
                         oMenu = m_oVisibleMenus[i];
-        
+
                         if (oMenu.cfg.getProperty("clicktohide") && 
                             !(oMenu instanceof YAHOO.widget.MenuBar) && 
                             oMenu.cfg.getProperty("position") == "dynamic") {
@@ -282,8 +282,22 @@ version: 2.5.1
         
                         }
                         else {
-    
-                            oMenu.clearActiveItem(true);
+                            
+							if (oMenu.cfg.getProperty("showdelay") > 0) {
+							
+								oMenu._cancelShowDelay();
+							
+							}
+
+
+							if (oMenu.activeItem) {
+						
+								oMenu.activeItem.blur();
+								oMenu.activeItem.cfg.setProperty("selected", false);
+						
+								oMenu.activeItem = null;            
+						
+							}
         
                         }
         
@@ -2504,12 +2518,7 @@ _onMouseOver: function (p_sType, p_aArgs) {
 
         Event.on(this.element, "mousemove", this._onMouseMove, this, true);
 
-
-		if (!Dom.isAncestor(oItem.element, Event.getRelatedTarget(oEvent))) {
-
-        	this.clearActiveItem();
-        
-        }
+		this.clearActiveItem();
 
 
         if (this.parent && this._nSubmenuHideDelayId) {
@@ -2739,12 +2748,10 @@ _onMouseMove: function (p_oEvent, p_oMenu) {
 */
 _onClick: function (p_sType, p_aArgs) {
 
-	var Event = YAHOO.util.Event,
-		Dom = YAHOO.util.Dom,
-		oEvent = p_aArgs[0],
+	var oEvent = p_aArgs[0],
 		oItem = p_aArgs[1],
-		oSubmenu,
 		bInMenuAnchor = false,
+		oSubmenu,
 		oRoot,
 		sId,
 		sURL,
@@ -2826,8 +2833,32 @@ _onClick: function (p_sType, p_aArgs) {
 	
 			if (!oSubmenu) {
 	
-				oRoot = this.getRoot();
+				/*
+					There is an inconsistency between Firefox 2 for Mac OS X and Firefox 2 Windows 
+					regarding the triggering of the display of the browser's context menu and the 
+					subsequent firing of the "click" event. In Firefox for Windows, when the user 
+					triggers the display of the browser's context menu the "click" event also fires 
+					for the document object, even though the "click" event did not fire for the 
+					element that was the original target of the "contextmenu" event. This is unique 
+					to Firefox on Windows. For all other A-Grade browsers, including Firefox 2 for 
+					Mac OS X, the "click" event doesn't fire for the document object. 
+
+					This bug in Firefox 2 for Windows affects Menu as Menu instances listen for 
+					events at the document level and have an internal "click" event handler they 
+					use to hide themselves when clicked. As a result, in Firefox for Windows a 
+					Menu will hide when the user right clicks on a MenuItem to raise the browser's 
+					default context menu, because its internal "click" event handler ends up 
+					getting called.  The following line fixes this bug.
+				*/
+
+				if ((UA.gecko && this.platform == "windows") && oEvent.button > 0) {
 				
+					return;
+				
+				}
+
+				oRoot = this.getRoot();
+
 				if (oRoot instanceof YAHOO.widget.MenuBar || 
 					oRoot.cfg.getProperty("position") == "static") {
 	
@@ -4544,6 +4575,15 @@ onRender: function (p_sType, p_aArgs) {
             oShadow = this._shadow;
     
         if (oShadow && oElement) {
+
+			// Clear the previous width
+
+			if (oShadow.style.width && oShadow.style.height) {
+			
+				oShadow.style.width = "";
+				oShadow.style.height = "";
+			
+			}
 
             oShadow.style.width = (oElement.offsetWidth + 6) + "px";
             oShadow.style.height = (oElement.offsetHeight + 1) + "px";
@@ -8979,4 +9019,4 @@ toString: function() {
 }
     
 }); // END YAHOO.lang.extend
-YAHOO.register("menu", YAHOO.widget.Menu, {version: "2.5.1", build: "984"});
+YAHOO.register("menu", YAHOO.widget.Menu, {version: "2.5.2", build: "1076"});

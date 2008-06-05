@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 /**
  * The selector module provides helper methods allowing CSS3 Selectors to be used with DOM elements.
@@ -665,4 +665,4 @@ Selector = new Selector();
 Selector.patterns = patterns;
 Y.Selector = Selector;
 })();
-YAHOO.register("selector", YAHOO.util.Selector, {version: "2.5.1", build: "984"});
+YAHOO.register("selector", YAHOO.util.Selector, {version: "2.5.2", build: "1076"});

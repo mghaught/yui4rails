@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 (function() {
     /**
@@ -219,6 +219,9 @@ var Dom = YAHOO.util.Dom,
                     if (disabled) {
                         this.addClass('yui-button-disabled');
                         this.addClass('yui-' + this.get('type') + '-button-disabled');
+                        if (this.get('type') == 'color') {
+                            this.get('menu').hide();
+                        }                        
                     } else {
                         this.removeClass('yui-button-disabled');
                         this.removeClass('yui-' + this.get('type') + '-button-disabled');
@@ -1287,7 +1290,7 @@ var Dom = YAHOO.util.Dom,
                             this._buttonClick(ev, oButton);
                         }, oButton, this);
                         tmp.on('click', function(ev) {
-                            //YAHOO.util.Event.stopEvent(ev);
+                            YAHOO.util.Event.stopEvent(ev);
                         });
                     } else {
                         //Stop the mousedown event so we can trap the selection in the editor!
@@ -2153,7 +2156,9 @@ var Dom = YAHOO.util.Dom,
                 document.body.appendChild(el);
             }
         } else {
-            Lang.augmentObject(o, attrs); //Break the config reference
+            if (attrs) {
+                Lang.augmentObject(o, attrs); //Break the config reference
+            }
         }
 
         var oConfig = {
@@ -3287,7 +3292,7 @@ var Dom = YAHOO.util.Dom,
             //It get's fired after a menu is closed and gives up a bogus event to work with
             //this._setCurrentEvent(ev);
             var self = this;
-            if (this.browser.opera) {
+            if (this.browser.opera < 9.5) {
                 /**
                 * @knownissue Opera appears to stop the MouseDown, Click and DoubleClick events on an image inside of a document with designMode on..
                 * @browser Opera
@@ -3363,6 +3368,12 @@ var Dom = YAHOO.util.Dom,
                 return false;
             }
             this._setCurrentEvent(ev);
+            
+            //Opera 9.5 for Windows displays a context menu on doubleclick, this stops it
+            if (this.browser.opera >= 9.5) {
+                Event.preventDefault(ev);
+            }
+
             var sel = Event.getTarget(ev);
             if (this._isElement(sel, 'img')) {
                 this.currentElement[0] = sel;
@@ -3599,6 +3610,7 @@ var Dom = YAHOO.util.Dom,
         * @description Handles all keydown events inside the iFrame document.
         */
         _handleKeyDown: function(ev) {
+            var tar = null, _range = null;        
             if (this._isNonEditable(ev)) {
                 return false;
             }
@@ -3669,11 +3681,40 @@ var Dom = YAHOO.util.Dom,
                 case 85: //U
                     action = 'underline';
                     break;
+                case 9:
+                    if (this.browser.ie) {
+                        //Insert a tab in Internet Explorer
+                        _range = this._getRange();
+                        tar = this._getSelectedElement();
+                        if (!this._isElement(tar, 'li')) {
+                            if (_range) {
+                                _range.pasteHTML('&nbsp;&nbsp;&nbsp;&nbsp;');
+                                _range.collapse(false);
+                                _range.select();
+                            }
+                            Event.stopEvent(ev);
+                        }
+                    }
+                    //Firefox 3 code
+                    if (this.browser.gecko > 1.8) {
+                        tar = this._getSelectedElement();
+                        if (this._isElement(tar, 'li')) {
+                            if (ev.shiftKey) {
+                                this._getDoc().execCommand('outdent', null, '');
+                            } else {
+                                this._getDoc().execCommand('indent', null, '');
+                            }
+                        } else if (!this._hasSelection()) {
+                            this.execCommand('inserthtml', '&nbsp;&nbsp;&nbsp;&nbsp;');
+                        }
+                        Event.stopEvent(ev);
+                    }
+                    break;                
                 case 13:
                     if (this.browser.ie) {
                         //Insert a <br> instead of a <p></p> in Internet Explorer
-                        var _range = this._getRange();
-                        var tar = this._getSelectedElement();
+                        _range = this._getRange();
+                        tar = this._getSelectedElement();
                         if (!this._isElement(tar, 'li')) {
                             if (_range) {
                                 _range.pasteHTML('<br>');
@@ -4003,7 +4044,7 @@ var Dom = YAHOO.util.Dom,
         * @description The text to place in the URL textbox when using the blankimage.
         * @type String
         */
-        STR_IMAGE_HERE: 'Image Url Here',
+        STR_IMAGE_HERE: 'Image URL Here',
         /**
         * @property STR_LINK_URL
         * @description The label string for the Link URL.
@@ -4453,9 +4494,9 @@ var Dom = YAHOO.util.Dom,
                                 }
                             }
                         } else {
-                            Event.unsubscribe(this.get('element').form, 'submit', this._handleFormSubmit);
+                            Event.removeListener(this.get('element').form, 'submit', this._handleFormSubmit);
                             if (this._formButtons) {
-                                Event.unsubscribe(this._formButtons, 'click', this._handleFormButtonClick);
+                                Event.removeListener(this._formButtons, 'click', this._handleFormButtonClick);
                             }
                         }
                     }
@@ -5203,7 +5244,7 @@ var Dom = YAHOO.util.Dom,
                 exec = false;
             }*/
 
-            if (!this._isElement(el, 'body')) {
+            if (!this._isElement(el, 'body') && !this._hasSelection()) {            
                 Dom.setStyle(el, 'background-color', value);
                 this._selectNode(el);
                 exec = false;
@@ -5224,7 +5265,7 @@ var Dom = YAHOO.util.Dom,
             var exec = true,
                 el = this._getSelectedElement();
 
-                if (!this._isElement(el, 'body')) {
+                if (!this._isElement(el, 'body') && !this._hasSelection()) {            
                     Dom.setStyle(el, 'color', value);
                     this._selectNode(el);
                     exec = false;
@@ -5568,7 +5609,7 @@ var Dom = YAHOO.util.Dom,
                         el.setAttribute('tag', tagName);
 
                         for (var k in tagStyle) {
-                            if (YAHOO.util.Lang.hasOwnProperty(tagStyle, k)) {
+                            if (YAHOO.lang.hasOwnProperty(tagStyle, k)) {
                                 el.style[k] = tagStyle[k];
                             }
                         }
@@ -6412,7 +6453,7 @@ var Dom = YAHOO.util.Dom,
         * @description The label string for Image URL
         * @type String
         */
-        STR_IMAGE_URL: 'Image Url',
+        STR_IMAGE_URL: 'Image URL',
         /**
         * @property STR_IMAGE_TITLE
         * @description The label string for Image Description
@@ -6766,9 +6807,9 @@ var Dom = YAHOO.util.Dom,
                         target = el.getAttribute('target');
                     }
                 }
-                var str = '<label for="createlink_url"><strong>' + this.STR_LINK_URL + ':</strong> <input type="text" name="createlink_url" id="createlink_url" value="' + url + '"' + ((localFile) ? ' class="warning"' : '') + '></label>';
-                str += '<label for="createlink_target"><strong>&nbsp;</strong><input type="checkbox" name="createlink_target_" id="createlink_target" value="_blank"' + ((target) ? ' checked' : '') + '> ' + this.STR_LINK_NEW_WINDOW + '</label>';
-                str += '<label for="createlink_title"><strong>' + this.STR_LINK_TITLE + ':</strong> <input type="text" name="createlink_title" id="createlink_title" value="' + title + '"></label>';
+                var str = '<label for="createlink_url"><strong>' + this.STR_LINK_URL + ':</strong> <input type="text" name="createlink_url" class="createlink_url" id="createlink_url" value="' + url + '"' + ((localFile) ? ' class="warning"' : '') + '></label>';
+                str += '<label for="createlink_target"><strong>&nbsp;</strong><input type="checkbox" name="createlink_target" id="createlink_target" class="createlink_target" value="_blank"' + ((target) ? ' checked' : '') + '> ' + this.STR_LINK_NEW_WINDOW + '</label>';
+                str += '<label for="createlink_title"><strong>' + this.STR_LINK_TITLE + ':</strong> <input type="text" name="createlink_title" class="createlink_title" id="createlink_title" value="' + title + '"></label>';
                 
                 var body = document.createElement('div');
                 body.innerHTML = str;
@@ -6930,7 +6971,7 @@ var Dom = YAHOO.util.Dom,
                     oheight = el._height;
                     owidth = el._width;
                 }
-                var str = '<label for="insertimage_url"><strong>' + this.STR_IMAGE_URL + ':</strong> <input type="text" id="insertimage_url" value="' + src + '" size="40"></label>';
+                var str = '<label for="insertimage_url"><strong>' + this.STR_IMAGE_URL + ':</strong> <input type="text" id="insertimage_url" class="insertimage_url" value="' + src + '" size="40"></label>';
                 body = document.createElement('div');
                 body.innerHTML = str;
 
@@ -6938,9 +6979,9 @@ var Dom = YAHOO.util.Dom,
                 tbarCont.id = 'img_toolbar';
                 body.appendChild(tbarCont);
 
-                var str2 = '<label for="insertimage_title"><strong>' + this.STR_IMAGE_TITLE + ':</strong> <input type="text" id="insertimage_title" value="' + title + '" size="40"></label>';
-                str2 += '<label for="insertimage_link"><strong>' + this.STR_LINK_URL + ':</strong> <input type="text" name="insertimage_link" id="insertimage_link" value="' + link + '"></label>';
-                str2 += '<label for="insertimage_target"><strong>&nbsp;</strong><input type="checkbox" name="insertimage_target_" id="insertimage_target" value="_blank"' + ((target) ? ' checked' : '') + '> ' + this.STR_LINK_NEW_WINDOW + '</label>';
+                var str2 = '<label for="insertimage_title"><strong>' + this.STR_IMAGE_TITLE + ':</strong> <input type="text" id="insertimage_title" class="insertimage_title" value="' + title + '" size="40"></label>';
+                str2 += '<label for="insertimage_link"><strong>' + this.STR_LINK_URL + ':</strong> <input type="text" name="insertimage_link" id="insertimage_link" class="insertimage_link" value="' + link + '"></label>';
+                str2 += '<label for="insertimage_target"><strong>&nbsp;</strong><input type="checkbox" name="insertimage_target_" id="insertimage_target" class="insertimage_target" value="_blank"' + ((target) ? ' checked' : '') + '> ' + this.STR_LINK_NEW_WINDOW + '</label>';
                 var div = document.createElement('div');
                 div.innerHTML = str2;
                 body.appendChild(div);
@@ -7966,4 +8007,4 @@ var Dom = YAHOO.util.Dom,
 */
 
 })();
-YAHOO.register("editor", YAHOO.widget.Editor, {version: "2.5.1", build: "984"});
+YAHOO.register("editor", YAHOO.widget.Editor, {version: "2.5.2", build: "1076"});
