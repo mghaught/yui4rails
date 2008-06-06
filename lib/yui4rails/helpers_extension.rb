@@ -9,6 +9,6 @@ module Yui4Rails
 			yield block
 			concat("</div>", block.binding)			
 		end
-
+	
   end
 end
