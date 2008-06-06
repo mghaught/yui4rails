@@ -50,6 +50,7 @@ describe Yui4Rails::Widgets::Carousel do
 	describe ".new" do
 		
 		before(:each) do
+			Yui4Rails::AssetManager.reset
 		  @manager = Yui4Rails::AssetManager.manager
 		end
 	  it "should populate the AssetManager's script with the carousel's head script" do
