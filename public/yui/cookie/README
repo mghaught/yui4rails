@@ -1,5 +1,9 @@
 YUI Library - Cookie Utility - Release Notes
 
+2.5.2
+
+  * No changes.
+
 2.5.1
 
   * Fixed bug preventing cookies with numbers or non-alphanumeric
@@ -7,4 +11,4 @@ YUI Library - Cookie Utility - Release Notes
 
 2.5.0
 
-  * Beta release
+  * Beta release.

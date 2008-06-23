@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 /**
  * The YUI Uploader Control
@@ -633,4 +633,4 @@ YAHOO.extend(YAHOO.widget.Uploader, YAHOO.widget.FlashAdapter,
 		this._swf.removeFile(fileID);
 	}
 });
-YAHOO.register("uploader", YAHOO.widget.Uploader, {version: "2.5.1", build: "984"});
+YAHOO.register("uploader", YAHOO.widget.Uploader, {version: "2.5.2", build: "1076"});

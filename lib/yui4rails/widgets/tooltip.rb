@@ -6,7 +6,7 @@ module Yui4Rails
 				@options = defaults.merge(options)
 				@options[:context] = tooltip_id
 				
-				Yui4Rails::AssetManager.manager.add_components :container
+				Yui4Rails::AssetManager.manager.add_components :tooltip
 	    end
 	
 			def render

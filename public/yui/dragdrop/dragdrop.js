@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 /**
  * The drag and drop utility provides a framework for building drag and drop
@@ -596,6 +596,7 @@ YAHOO.util.DragDropMgr = function() {
 
                 if (this.dragThreshMet) {
                     if (this.fromTimeout) {
+                        this.fromTimeout = false;
                         this.handleMouseMove(e);
                     }
                     this.fromTimeout = false;
@@ -2779,7 +2780,7 @@ YAHOO.extend(YAHOO.util.DD, YAHOO.util.DragDrop, {
 
     /**
      * When set to true, the utility automatically tries to scroll the browser
-     * window wehn a drag and drop element is dragged near the viewport boundary.
+     * window when a drag and drop element is dragged near the viewport boundary.
      * Defaults to true.
      * @property scroll
      * @type boolean
@@ -3213,7 +3214,7 @@ YAHOO.extend(YAHOO.util.DDProxy, YAHOO.util.DD, {
             if (YAHOO.env.ua.ie) {
                 //Only needed for Internet Explorer
                 var ifr = document.createElement('iframe');
-                ifr.setAttribute('src', 'about:blank');
+                ifr.setAttribute('src', 'javascript:');
                 ifr.setAttribute('scrolling', 'no');
                 ifr.setAttribute('frameborder', '0');
                 div.insertBefore(ifr, div.firstChild);
@@ -3478,4 +3479,4 @@ YAHOO.extend(YAHOO.util.DDTarget, YAHOO.util.DragDrop, {
         return ("DDTarget " + this.id);
     }
 });
-YAHOO.register("dragdrop", YAHOO.util.DragDropMgr, {version: "2.5.1", build: "984"});
+YAHOO.register("dragdrop", YAHOO.util.DragDropMgr, {version: "2.5.2", build: "1076"});

@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 YAHOO.namespace('lang');
 
@@ -366,4 +366,4 @@ YAHOO.lang.JSON = {
         return _stringify(o,w,d);
     }
 };
-YAHOO.register("json", YAHOO.lang.JSON, {version: "2.5.1", build: "984"});
+YAHOO.register("json", YAHOO.lang.JSON, {version: "2.5.2", build: "1076"});

@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 /**
  * Utilities for cookie management
@@ -382,4 +382,4 @@ YAHOO.util.Cookie = {
 
 };
 
-YAHOO.register("cookie", YAHOO.util.Cookie, {version: "2.5.1", build: "984"});
+YAHOO.register("cookie", YAHOO.util.Cookie, {version: "2.5.2", build: "1076"});

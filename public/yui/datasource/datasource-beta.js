@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 /**
  * The DataSource utility provides a common configurable interface for widgets
@@ -1797,4 +1797,4 @@ YAHOO.util.DataSource.prototype.parseHTMLTableData = function(oRequest, oFullRes
     }
  };
  
-YAHOO.register("datasource", YAHOO.util.DataSource, {version: "2.5.1", build: "984"});
+YAHOO.register("datasource", YAHOO.util.DataSource, {version: "2.5.2", build: "1076"});

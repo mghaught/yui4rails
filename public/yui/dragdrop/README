@@ -1,5 +1,10 @@
 Drag and Drop Release Notes
 
+2.5.2
+    * Fixed iframe src attribute for DDProxy (SSL Error in IE6)
+    * Fixed typos in documentation
+    * Fixed potential Stack Overflow with mousedown threshold
+
 2.5.1
     * No change
 

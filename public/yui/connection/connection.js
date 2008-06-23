@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 /**
  * The Connection Manager provides a simplified interface to the XMLHttpRequest
@@ -540,7 +540,6 @@ YAHOO.util.Connect =
 			this.handleReadyState(o, callback);
 			o.conn.send(postData || '');
 
-
 			// Reset the HTML form data and state properties as
 			// soon as the data are submitted.
 			if(this._isFormSubmit === true){
@@ -1011,7 +1010,6 @@ YAHOO.util.Connect =
 		this._isFormSubmit = true;
 		this._sFormData = this._sFormData.substr(0, this._sFormData.length - 1);
 
-
 		this.initHeader('Content-Type', this._default_form_header);
 
 		return this._sFormData;
@@ -1133,7 +1131,7 @@ YAHOO.util.Connect =
 		this._formNode.setAttribute('method', 'POST');
 		this._formNode.setAttribute('target', frameId);
 
-		if(this._formNode.encoding){
+		if(YAHOO.env.ua.ie){
 			// IE does not respect property enctype for HTML forms.
 			// Instead it uses the property - "encoding".
 			this._formNode.setAttribute('encoding', uploadEncoding);
@@ -1355,11 +1353,10 @@ YAHOO.util.Connect =
 			//dereference the XHR instance.
 			o.conn = null;
 
-
 			//dereference the connection object.
 			o = null;
 		}
 	}
 };
 
-YAHOO.register("connection", YAHOO.util.Connect, {version: "2.5.1", build: "984"});
+YAHOO.register("connection", YAHOO.util.Connect, {version: "2.5.2", build: "1076"});
