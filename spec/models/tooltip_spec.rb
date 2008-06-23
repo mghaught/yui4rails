@@ -25,7 +25,7 @@ describe Yui4Rails::Widgets::Tooltip do
 		  @manager = Yui4Rails::AssetManager.manager
 		end
 	  it "should populate the AssetManager's script with the tooltip's head script" do
-			@manager.should_receive(:add_components).with(:container)
+			@manager.should_receive(:add_components).with(:tooltip)
 	    @tooltip = Yui4Rails::Widgets::Tooltip.new(@tooltip_id)
 	  end
 	end
