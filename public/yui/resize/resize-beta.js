@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 /**
  * @description <p>Makes an element resizable</p>
@@ -571,6 +571,13 @@ var D = YAHOO.util.Dom,
 
             this._resizeEvent = null;
             this._currentHandle = null;
+            
+            if (!this.get('animate')) {
+                this.set('height', this._cache.height, true);
+                this.set('width', this._cache.width, true);
+            }
+
+            this.fireEvent('endResize', { ev: 'endResize', target: this, height: this._cache.height, width: this._cache.width, top: this._cache.top, left: this._cache.left });
         },
         /** 
         * @private
@@ -1574,6 +1581,11 @@ var D = YAHOO.util.Dom,
 * @type YAHOO.util.CustomEvent
 */
 /**
+* @event endResize
+* @description Fires when the mouseUp event from the Drag Instance fires.
+* @type YAHOO.util.CustomEvent
+*/
+/**
 * @event resize
 * @description Fires on every element resize (only fires once when used with proxy config setting).
 * @type YAHOO.util.CustomEvent
@@ -1591,4 +1603,4 @@ var D = YAHOO.util.Dom,
 
 })();
 
-YAHOO.register("resize", YAHOO.util.Resize, {version: "2.5.1", build: "984"});
+YAHOO.register("resize", YAHOO.util.Resize, {version: "2.5.2", build: "1076"});

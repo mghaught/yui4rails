@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 /****************************************************************************/
 /****************************************************************************/
@@ -2027,4 +2027,4 @@ if(!YAHOO.widget.Logger) {
 }
 
 
-YAHOO.register("logger", YAHOO.widget.Logger, {version: "2.5.1", build: "984"});
+YAHOO.register("logger", YAHOO.widget.Logger, {version: "2.5.2", build: "1076"});

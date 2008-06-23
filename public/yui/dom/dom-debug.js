@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 /**
  * The dom module provides helper methods for manipulating Dom elements.
@@ -1263,4 +1263,4 @@ YAHOO.util.Point = function(x, y) {
 
 YAHOO.util.Point.prototype = new YAHOO.util.Region();
 
-YAHOO.register("dom", YAHOO.util.Dom, {version: "2.5.1", build: "984"});
+YAHOO.register("dom", YAHOO.util.Dom, {version: "2.5.2", build: "1076"});

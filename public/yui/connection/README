@@ -1,5 +1,23 @@
 Connection Manager Release Notes
 
+*** version 2.5.2 ***
+
+* In file upload transactions, in Safari 3.x, fail to send the file data.  This
+is due to Safari evaluating the condition statement "if(formObject.encoding){}"
+as true.  This results in the incorrect attribute being set, the correct
+attribute being "enctype."  The conditional check now explicitly verifies for
+IE, before setting the appropriate attribute.
+
+* NOTE: File uploads using setForm() do not function as expected in Opera
+9.27.  The file and data upload phase works as expected, however the server
+response cannot be read.  Specifically, "onload" for an iframe is triggered when
+the iframe is appended into the DOM.  This results in the upload callback being
+fired immediately, before the transaction is complete, and before the response
+data are available.
+
+This condition is documented in Opera's bug tracking system: 295719 and appears
+to have been fixed as of Opera 9.50 b2.
+
 *** version 2.5.1 ***
 
 * no changes.

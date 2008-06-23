@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 /**
  * The Connection Manager provides a simplified interface to the XMLHttpRequest
@@ -1157,7 +1157,7 @@ YAHOO.util.Connect =
 		this._formNode.setAttribute('method', 'POST');
 		this._formNode.setAttribute('target', frameId);
 
-		if(this._formNode.encoding){
+		if(YAHOO.env.ua.ie){
 			// IE does not respect property enctype for HTML forms.
 			// Instead it uses the property - "encoding".
 			this._formNode.setAttribute('encoding', uploadEncoding);
@@ -1392,4 +1392,4 @@ YAHOO.util.Connect =
 	}
 };
 
-YAHOO.register("connection", YAHOO.util.Connect, {version: "2.5.1", build: "984"});
+YAHOO.register("connection", YAHOO.util.Connect, {version: "2.5.2", build: "1076"});

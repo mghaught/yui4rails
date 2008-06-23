@@ -2,7 +2,7 @@
 Copyright (c) 2008, Yahoo! Inc. All rights reserved.
 Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
-version: 2.5.1
+version: 2.5.2
 */
 
 /**
@@ -214,7 +214,12 @@ throw new Error("Invalid callback for subscriber to '" + this.type + "'");
      *                   true otherwise
      */
     fire: function() {
-        var len=this.subscribers.length;
+
+        this.lastError = null;
+
+        var errors = [],
+            len=this.subscribers.length;
+
         if (!len && this.silent) {
             return true;
         }
@@ -226,7 +231,7 @@ throw new Error("Invalid callback for subscriber to '" + this.type + "'");
 
         // make a copy of the subscribers so that there are
         // no index problems if one subscriber removes another.
-        var subs = this.subscribers.slice();
+        var subs = this.subscribers.slice(), throwErrors = YAHOO.util.Event.throwErrors;
 
         for (i=0; i<len; ++i) {
             var s = subs[i];
@@ -248,35 +253,33 @@ throw new Error("Invalid callback for subscriber to '" + this.type + "'");
                         ret = s.fn.call(scope, param, s.obj);
                     } catch(e) {
                         this.lastError = e;
+                        // errors.push(e);
+                        if (throwErrors) {
+                            throw e;
+                        }
                     }
                 } else {
                     try {
                         ret = s.fn.call(scope, this.type, args, s.obj);
                     } catch(ex) {
                         this.lastError = ex;
+                        if (throwErrors) {
+                            throw ex;
+                        }
                     }
                 }
+
                 if (false === ret) {
                     if (!this.silent) {
                     }
 
-                    //break;
-                    return false;
+                    break;
+                    // return false;
                 }
             }
         }
 
-        
-        // if (rebuild) {
-        //     var newlist=this.,subs=this.subscribers;
-        //     for (i=0,len=subs.length; i<len; i=i+1) {
-        //         // this wasn't doing anything before
-        //         newlist.push(subs[i]);
-        //     }
-        //     this.subscribers=newlist;
-        // }
-
-        return true;
+        return (ret !== false);
     },
 
     /**
@@ -689,6 +692,17 @@ if (!YAHOO.util.Event) {
              * @static
              */
             DOMReady: false,
+
+            /**
+             * Errors thrown by subscribers of custom events are caught
+             * and the error message is written to the debug console.  If
+             * this property is set to true, it will also re-throw the
+             * error.
+             * @property throwErrors
+             * @type boolean
+             * @default false
+             */
+            throwErrors: false,
 
             /**
              * @method startInterval
@@ -2101,8 +2115,6 @@ YAHOO.util.EventProvider.prototype = {
      *   <li>The custom object (if any) that was passed into the subscribe() 
      *       method</li>
      *   </ul>
-     * If the custom event has not been explicitly created, it will be
-     * created now with the default config, scoped to the host object
      * @method fireEvent
      * @param p_type    {string}  the type, or name of the event
      * @param arguments {Object*} an arbitrary set of parameters to pass to 
@@ -2366,4 +2378,4 @@ YAHOO.util.KeyListener.KEY = {
     TAB          : 9,
     UP           : 38
 };
-YAHOO.register("event", YAHOO.util.Event, {version: "2.5.1", build: "984"});
+YAHOO.register("event", YAHOO.util.Event, {version: "2.5.2", build: "1076"});
