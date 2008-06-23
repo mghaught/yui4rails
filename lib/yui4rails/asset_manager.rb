@@ -71,7 +71,7 @@ module Yui4Rails
 	  end
 	
 		def add_container_includes
-			@yui_stylesheets << "container/assets/container"
+			@yui_stylesheets << "container/assets/skins/sam/container"
 			@yui_javascript << "yahoo-dom-event/yahoo-dom-event"
 			@yui_javascript << "animation/animation-min"
 			@yui_javascript << "container/container-min"	
