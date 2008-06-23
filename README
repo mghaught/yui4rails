@@ -11,17 +11,26 @@ As with plugins, you can install YUI 4 Rails either from archive or subversion.
 
 Via Subversion:
 
-script/plugin install svn://rubyforge.org/var/svn/yui4rails/trunk/
+script/plugin install svn://rubyforge.org/var/svn/yui4rails/tags/yui4rails-0.1.1/
 
 Via archive:
 
 Download either the tar.gz or zip file and extract it into your RAILS_APP/vendor/plugins directory. 
 
+For those of you wishing to be more on the cutting edge of the plugin, please use my github repo at:
+
+http://github.com/mghaught/yui4rails/tree/master
+
+You can install it via the git clone command (if you have Git installed):
+
+git clone git://github.com/mghaught/yui4rails vendor/plugins/yui4rails
+
+Or hit the download button and extract the tarball as the archive command above illustrates.
 
 Next, you will want to run the rake command to install the YUI resources into your application.  
 
 From the plugin root, run this command:
-rake initialize_yui
+rake yui4rails:update
 
 You should then find a lot of resources copied to the <RAILS_ROOT>/public/yui directory.  At this time, the plugin assumes that you are referencing the YUI resources from your server, as opposed to theirs.  We will make this optional in the future.
 
