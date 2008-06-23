@@ -14,7 +14,6 @@ Via Subversion:
 
 script/plugin install svn://rubyforge.org/var/svn/yui4rails/tags/yui4rails-0.1.1
 
-
 Via archive:
 
 Download either the tar.gz or zip file and extract it into your RAILS_APP/vendor/plugins directory. 
