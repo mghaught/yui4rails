@@ -6,6 +6,7 @@ module Yui4Rails
 	      @column_definitions = column_definitions
 	      @data_rows = data_rows
 	      @data_keys = Widgets.extract_keys(data_rows)
+				Yui4Rails::AssetManager.manager.add_components :charts
 	    end
     
 			# TODO - This widget still has hardcoded values and is not ready for public consumption

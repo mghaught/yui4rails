@@ -79,6 +79,7 @@ module Yui4Rails
           @data_keys = Widgets.extract_keys(@data_rows)
           @footer_row = args[3] || '' 
         end
+				Yui4Rails::AssetManager.manager.add_components :datatable
       end
 
       # Add pagination to YUI datatable.
