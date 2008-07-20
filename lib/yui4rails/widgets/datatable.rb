@@ -162,7 +162,6 @@ module Yui4Rails
         my_configs = []
         my_configs << @pagination_text if @pagination_text
         my_configs << @initial_sort_text if @initial_sort_text
-        return '' if my_configs.size == 0
         return "var myConfigs = {\n" + my_configs.join(",\n") + " };\n"
       end
 
