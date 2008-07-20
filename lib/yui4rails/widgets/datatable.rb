@@ -63,21 +63,23 @@ module Yui4Rails
         case args[0]
         when Hash
           options = args[0]
-          @table_div_id = options[:table_div_id]
-          @table_id     = options[:table_id]    
-          @col_defs     = options[:col_defs]    
-          @data_rows    = options[:data_rows]   
-          @footer_row   = options[:footer_row]  
-          @data_keys    = options[:data_keys]   
+          @table_div_id = options.delete(:table_div_id)
+          @table_id     = options.delete(:table_id)    
+          @col_defs     = options.delete(:col_defs)    
+          @data_rows    = options.delete(:data_rows)   
+          @footer_row   = options.delete(:footer_row)  
+          @data_keys    = options.delete(:data_keys)   
           if @data_rows and !@data_keys
-            @data_keys = Widgets.extract_keys(data_rows)
+            @data_keys = Widgets.extract_keys(@data_rows)
           end
+          @configs = options
         when String
           @table_div_id = args[0]
           @col_defs = args[1] 
           @data_rows = args[2] 
           @data_keys = Widgets.extract_keys(@data_rows)
           @footer_row = args[3] || '' 
+          @configs = args[4] || {}
         end
 				Yui4Rails::AssetManager.manager.add_components :datatable
       end
@@ -162,6 +164,19 @@ module Yui4Rails
         my_configs = []
         my_configs << @pagination_text if @pagination_text
         my_configs << @initial_sort_text if @initial_sort_text
+        my_configs += @configs.map do |k,v| 
+          val = case v
+          when true
+            v.to_s
+          when false
+            v.to_s
+          when Numeric 
+            v.to_s
+          else
+            "\"#{v}\""
+          end
+          "#{k}: #{val}"
+        end
         return "var myConfigs = {\n" + my_configs.join(",\n") + " };\n"
       end
 
