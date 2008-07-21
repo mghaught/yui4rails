@@ -31,4 +31,16 @@ describe Yui4Rails::Widgets::DataTable, "with no footer row" do
   it "should render the specified table_id" do
     @datatable.render.should match(/<div id="#{@table_id}"/)
   end
+  it "should use extra options" do
+	  @datatable = Yui4Rails::Widgets::DataTable.new(@table_id, @column_definitions, @data_rows,'',
+	    :foo=>'bar',:eh=>2, :hoboy=>true)
+    @datatable.render(:source=>:html).should match(/foo: "bar",/)
+    @datatable.render(:source=>:html).should match(/eh: 2/)
+    @datatable.render(:source=>:html).should match(/hoboy: true/)
+  end
+  it "should use extra options in hashed args" do
+	  @datatable = Yui4Rails::Widgets::DataTable.new(:table_id=>@table_id,:col_defs=>@column_definitions,:data_rows=>@data_rows,:foo=>'bar',:eh=>2)
+    @datatable.render(:source=>:html).should match(/foo: "bar",/)
+    @datatable.render(:source=>:html).should match(/eh: 2/)
+  end
 end

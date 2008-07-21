@@ -49,11 +49,11 @@ Using
 
 We have a convenience include helper for you to use in your templates
 
-<%= include_yui  %>
+<%= yui_includes  %>
 
 You will want to feed this an array of component names (as symbols) such as:
 
-<%= include_yui :datatable, :charts %>
+<%= yui_includes :datatable, :charts %>
 
 It will pull in the necessary javascript and stylesheet resources for those components.
 
