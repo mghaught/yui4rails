@@ -2,27 +2,29 @@ module Yui4Rails
 	module Widgets
 	
 	  class Formatter; end
+
 	  class NumberFormatter < Formatter
 	    def self.to_s
 				"number"
 	    end
 	  end
+
 	  class CurrencyFormatter < Formatter
 	    def self.to_s
 	      "currency"
 	    end
 	  end
-  
+
 	  def self.extract_keys(data_rows)
 	    keys = []
 	    return keys if data_rows.empty?
-    
+
 	    data_rows.first.each do |k, v|
 	      keys << { :key => k.to_s }
 	    end
 	    keys
 	  end
-  
+
 	  class DataTable
       # Initialize new DataTable object
       # accepts either a list of arguments for backward compatability
@@ -35,9 +37,9 @@ module Yui4Rails
       # * <tt>:footer_row</tt>: footer div id.  -See ActiveWarehouse for the yui_adapter than uses this
       # * <tt>:options</tt>: additional hash of options, including :table_id, the
       # DOM element ID for the HTML table
-      # 
+      #
       # If you pass a hash of options:
-      # Same as list of options except in an options Hash.  Also accepts a <tt>:data_keys</tt> 
+      # Same as list of options except in an options Hash.  Also accepts a <tt>:data_keys</tt>
       # hash, which, if not supplied is generated automatically from the <tt>:col_defs</tt> hash
       #
       # === HTML Table Example:
@@ -46,7 +48,7 @@ module Yui4Rails
       # <tt> {:label=>"Last", :key=>"lastname", :sortable=>true}, </tt>
       # <tt> {:label=>"Age", :key=>"age", :formatter=>"number", :sortable=>true, :sortOptions=></tt>
       # <tt> {:defaultDir=>"YAHOO.widget.DataTable.CLASS_DESC"}}, </tt>
-      # <tt> {:label=>"Description", :key=>"description", :sortable=>false}, </tt> 
+      # <tt> {:label=>"Description", :key=>"description", :sortable=>false}, </tt>
       # <tt> {:label=>"Balance", :key=>"balance", :formatter=>"currency", :sortable=>true}] </tt>
       #
       # <tt> data_keys = [{:key=>"firstname"}, </tt>
@@ -54,7 +56,7 @@ module Yui4Rails
       # <tt>   {:key=>"age", :parser=>"YAHOO.util.DataSource.parseNumber"}, </tt>
       # <tt>   {:key=>"description"}, </tt>
       # <tt>   {:key=>"balance", :parser=>"this.parseNumberFromCurrency"}]</tt>
-      # 
+      #
       # <tt> @data_table = Yui4Rails::Widgets::DataTable.new(:table_div_id => "markup",</tt>
       # <tt>  :col_defs => @col_defs,  :data_keys => @data_keys, :table_id => 'yui_table')</tt>
       # In the view:
@@ -64,21 +66,21 @@ module Yui4Rails
         when Hash
           options = args[0]
           @table_div_id = options.delete(:table_div_id)
-          @table_id     = options.delete(:table_id)    
-          @col_defs     = options.delete(:col_defs)    
-          @data_rows    = options.delete(:data_rows)   
-          @footer_row   = options.delete(:footer_row)  
-          @data_keys    = options.delete(:data_keys)   
+          @table_id     = options.delete(:table_id)
+          @col_defs     = options.delete(:col_defs)
+          @data_rows    = options.delete(:data_rows)
+          @footer_row   = options.delete(:footer_row)
+          @data_keys    = options.delete(:data_keys)
           if @data_rows and !@data_keys
             @data_keys = Widgets.extract_keys(@data_rows)
           end
           @configs = options
         when String
           @table_div_id = args[0]
-          @col_defs = args[1] 
-          @data_rows = args[2] 
+          @col_defs = args[1]
+          @data_rows = args[2]
           @data_keys = Widgets.extract_keys(@data_rows)
-          @footer_row = args[3] || '' 
+          @footer_row = args[3] || ''
           @configs = args[4] || {}
         end
 				Yui4Rails::AssetManager.manager.add_components :datatable
@@ -91,16 +93,15 @@ module Yui4Rails
         @pagination_text = "paginator: new YAHOO.widget.Paginator({rowsPerPage: #{rows}})"
       end
 
-      # Add initial sort direction.  
+      # Add initial sort direction.
       # This does not correctly with HTML-based tables, and not implemented yet for json
       # (yeah, so it doesn't work)
       # <tt>:key</tt>: column key to sort by
-      # <tt>:dir</tt>: initial sort direction (default is asc) 
+      # <tt>:dir</tt>: initial sort direction (default is asc)
       def initial_sort(key, dir='asc')
         @initial_sort_text = "sortedBy: {key:\"#{key}\",dir:\"#{dir}\"}"
       end
 
-    
       # Renders the datatable
       # * <tt>:options[:source]</tt>: the datasource for the datatable
       # e.g., <tt>:json</tt>(default) or <tt>:html</tt>
@@ -128,14 +129,14 @@ module Yui4Rails
               this.myDataSource.responseSchema = {
                 fields: #{data_keys_to_json}
               };
-              this.myDataTable = new YAHOO.widget.DataTable("#{@table_div_id}", myColumnDefs, 
+              this.myDataTable = new YAHOO.widget.DataTable("#{@table_div_id}", myColumnDefs,
               this.myDataSource, myConfigs);
 
             };
           });
           </script>
-          PAGE
-        end
+        PAGE
+      end
 
 	    def render_from_json
 	      <<-PAGE
@@ -150,8 +151,7 @@ module Yui4Rails
 	          fields: #{@data_keys.to_json}
 	        };
 	        this.myDataTable = new YAHOO.widget.DataTable("#{@table_div_id}", myColumnDefs, myDataSource);
-					var tbody_id = myDataTable._sId + "-bodytable";
-					$(tbody_id).createTFoot().innerHTML = '#{@footer_row}';
+					$(myDataTable.getTableEl()).createTFoot().innerHTML = '#{@footer_row}';
 
 	      });
 	      </script>
@@ -164,13 +164,13 @@ module Yui4Rails
         my_configs = []
         my_configs << @pagination_text if @pagination_text
         my_configs << @initial_sort_text if @initial_sort_text
-        my_configs += @configs.map do |k,v| 
+        my_configs += @configs.map do |k,v|
           val = case v
           when true
             v.to_s
           when false
             v.to_s
-          when Numeric 
+          when Numeric
             v.to_s
           else
             "\"#{v}\""

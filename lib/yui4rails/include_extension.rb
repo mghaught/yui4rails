@@ -24,7 +24,7 @@ module Yui4Rails
 				yui_includes << %{<script type="text/javascript" charset="utf-8">}
 				yui_includes << yui_script
 				yui_includes << "</script>"
-			end			
+			end
 			yui_includes.flatten.join("\n")	
 		end
   end

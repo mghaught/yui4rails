@@ -61,14 +61,16 @@ module Yui4Rails
 	  def add_datatable_includes
 			@yui_stylesheets << "datatable/assets/skins/sam/datatable"
 			@yui_javascript << "utilities/utilities"
-			@yui_javascript << "datasource/datasource-beta-min"
-			@yui_javascript << "datatable/datatable-beta-min"	
+			@yui_javascript << "datasource/datasource-min"
+			@yui_javascript << "datatable/datatable-min"	
 	  end
 
 	  def add_charts_includes
 			@yui_javascript << "utilities/utilities"
-			@yui_javascript << "datasource/datasource-beta-min"
+			@yui_javascript << "yahoo-dom-event/yahoo-dom-event"
 			@yui_javascript << "json/json-min"
+      @yui_javascript << "element/element-beta-min.js"
+			@yui_javascript << "datasource/datasource-min"
 			@yui_javascript << "charts/charts-experimental-min"	
 			add_script %{YAHOO.widget.Chart.SWFURL = "/yui/charts/assets/charts.swf";}
 	  end
