@@ -6,6 +6,7 @@ module Yui4Rails
 				@collection = collection
 				@options = defaults.merge(options)
 				@options[:size] = @collection.size
+				Yui4Rails::AssetManager.manager.add_components :carousel
 				render_head_script
 	    end
 	
