@@ -1,31 +1,31 @@
 module Yui4Rails
-	module Widgets
-	
-	  class Formatter; end
+  module Widgets
+  
+    class Formatter; end
 
-	  class NumberFormatter < Formatter
-	    def self.to_s
-				"number"
-	    end
-	  end
+    class NumberFormatter < Formatter
+      def self.to_s
+        "number"
+      end
+    end
 
-	  class CurrencyFormatter < Formatter
-	    def self.to_s
-	      "currency"
-	    end
-	  end
+    class CurrencyFormatter < Formatter
+      def self.to_s
+        "currency"
+      end
+    end
 
-	  def self.extract_keys(data_rows)
-	    keys = []
-	    return keys if data_rows.empty?
+    def self.extract_keys(data_rows)
+      keys = []
+      return keys if data_rows.empty?
 
-	    data_rows.first.each do |k, v|
-	      keys << { :key => k.to_s }
-	    end
-	    keys
-	  end
+      data_rows.first.each do |k, v|
+        keys << { :key => k.to_s }
+      end
+      keys
+    end
 
-	  class DataTable
+    class DataTable
       # Initialize new DataTable object
       # accepts either a list of arguments for backward compatability
       # or a hash of options.
@@ -35,6 +35,8 @@ module Yui4Rails
       # * <tt>:col_defs</tt>: Hash of column definitions
       # * <tt>:data_rows</tt>: Hash of data rows
       # * <tt>:footer_row</tt>: footer div id.  -See ActiveWarehouse for the yui_adapter than uses this
+      # * <tt>:row_formatter</tt>: string containing a Javascript function for row formatting
+      # * <tt>:head_script</tt>: string containing Javascript to push into the head of the page
       # * <tt>:options</tt>: additional hash of options, including :table_id, the
       # DOM element ID for the HTML table
       #
@@ -74,6 +76,8 @@ module Yui4Rails
           if @data_rows and !@data_keys
             @data_keys = Widgets.extract_keys(@data_rows)
           end
+          @row_formatter = options.delete(:row_formatter)
+          head_script = options.delete(:head_script)
           @configs = options
         when String
           @table_div_id = args[0]
@@ -83,7 +87,8 @@ module Yui4Rails
           @footer_row = args[3] || ''
           @configs = args[4] || {}
         end
-				Yui4Rails::AssetManager.manager.add_components :datatable
+        Yui4Rails::AssetManager.manager.add_components :datatable
+        Yui4Rails::AssetManager.manager.add_script head_script if head_script
       end
 
       # Add pagination to YUI datatable.
@@ -111,18 +116,16 @@ module Yui4Rails
         self.send(meth)
       end
 
-	    def render_from_html
-	      <<-PAGE
+      def render_from_html
+        <<-PAGE
         <script type="text/javascript">
-        #{get_configs}
+          #{get_configs}
           YAHOO.util.Event.addListener(window, "load", function() {
             YAHOO.example.EnhanceFromMarkup = new function() {
               var myColumnDefs = #{col_defs_to_json};
               this.parseNumberFromCurrency = function(sString) {
-                //remove commas
-                sString = sString.replace(/,/, '');
-                // Remove dollar sign and make it a float
-                return parseFloat(sString.substring(1));
+                sString = sString.replace(/,/, ''); //remove commas
+                return parseFloat(sString.substring(1)); // Remove dollar sign and make it a float
               };
               this.myDataSource = new YAHOO.util.DataSource(YAHOO.util.Dom.get("#{@table_id}"));
               this.myDataSource.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
@@ -131,32 +134,33 @@ module Yui4Rails
               };
               this.myDataTable = new YAHOO.widget.DataTable("#{@table_div_id}", myColumnDefs,
               this.myDataSource, myConfigs);
-
             };
           });
           </script>
         PAGE
       end
 
-	    def render_from_json
-	      <<-PAGE
-	      <div id="#{@table_div_id}" class="yui-skin-sam"></div>
-	      <script type="text/javascript">
-	      YAHOO.util.Event.addListener(window, "load", function() {
-	        var myData = #{@data_rows.to_json};
-	        var myColumnDefs = #{@col_defs.to_json};
-	        myDataSource = new YAHOO.util.DataSource(myData);
-	        myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
-	        myDataSource.responseSchema = {
-	          fields: #{@data_keys.to_json}
-	        };
-	        this.myDataTable = new YAHOO.widget.DataTable("#{@table_div_id}", myColumnDefs, myDataSource);
-					$(myDataTable.getTableEl()).createTFoot().innerHTML = '#{@footer_row}';
-
-	      });
-	      </script>
-	      PAGE
-	    end
+      def render_from_json
+        <<-PAGE
+        <div id="#{@table_div_id}" class="yui-skin-sam"></div>
+        <script type="text/javascript">
+        #{@row_formatter.values.first if @row_formatter}
+        YAHOO.util.Event.addListener(window, "load", function() {
+          var myData = #{@data_rows.to_json};
+          var myColumnDefs = #{@col_defs.to_json};
+          myDataSource = new YAHOO.util.DataSource(myData);
+          myDataSource.responseType = YAHOO.util.DataSource.TYPE_JSARRAY;
+          myDataSource.responseSchema = {
+            fields: #{@data_keys.to_json}
+          };
+          this.myDataTable = new YAHOO.widget.DataTable("#{@table_div_id}",
+                                                        myColumnDefs,
+                                                        myDataSource#{", {formatRow: #{@row_formatter.keys.first}}" if @row_formatter});
+          $(myDataTable.getTableEl()).createTFoot().innerHTML = '#{@footer_row}';
+        });
+        </script>
+        PAGE
+      end
 
       private
       # Constructs the myConfigs JavaScript variable if pagination or intial sort is used
@@ -196,6 +200,6 @@ module Yui4Rails
           gsub(/FromCurrency\"/, 'FromCurrency').
           gsub(/\"this\./, 'this.')
       end
-	  end
-	end
+    end
+  end
 end
