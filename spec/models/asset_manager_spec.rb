@@ -149,21 +149,9 @@ describe Yui4Rails::AssetManager do
 			@manager.send(:process_components)
 	  end
 
-		it "should use add_container_includes for :datatable" do
+		it "should use add_component for :datatable" do
 			@manager.instance_variable_set(:@components, [:datatable])
-			@manager.should_receive(:add_datatable_includes)
-			@manager.send(:process_components)
-	  end
-
-		it "should use add_container_includes for :charts" do
-			@manager.instance_variable_set(:@components, [:charts])
-			@manager.should_receive(:add_charts_includes)
-			@manager.send(:process_components)
-	  end
-
-		it "should use add_container_includes for :carousel" do
-			@manager.instance_variable_set(:@components, [:carousel])
-			@manager.should_receive(:add_carousel_includes)
+			@manager.should_receive(:add_component).once.with(:datatable)
 			@manager.send(:process_components)
 	  end
 	end

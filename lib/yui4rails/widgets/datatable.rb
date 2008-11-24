@@ -15,9 +15,9 @@ module Yui4Rails
       end
     end
 
-    def self.extract_keys(data_rows)
-      keys = []
-      return keys if data_rows.empty?
+	  def self.extract_keys(data_rows)
+	    keys = []
+	    return keys if data_rows.nil? || data_rows.empty?
 
       data_rows.first.each do |k, v|
         keys << { :key => k.to_s }

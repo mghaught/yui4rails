@@ -10,7 +10,11 @@ module Yui4Rails
     end
   
     def yui_chart(chart_type, chart_id, rows, options = {})
-      Yui4Rails::Widgets::Chart.new(chart_type, chart_id, rows, options).render_chart
+      # Redo fields as an option in data
+      @fields = rows.map{ |row| row.keys.map(&:to_s) }.flatten.uniq
+      data = {:fields => @fields, :rows => rows}
+      
+      Yui4Rails::Widgets::Chart.new(chart_type, chart_id, data, options).render
     end
 
     def yui_datatable(statistics, div_id, options = {})
